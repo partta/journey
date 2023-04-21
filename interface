@@ -1,0 +1,31 @@
+ Check for wireless device
+if [ $monitor ]; then
+	airmon-ng stop $interface &>/dev/null
+     airmon-ng stop $interface &>/dev/null
+fi
+
+if [ $interface ]; then
+	echo
+     echo
+     echo -e "\e[1;33m[*] Initializing $interface wireless interface using kernel module $kernmod.\e[0m"
+	killall dhclient3 &>/dev/null
+	airmon-ng start $interface &>/dev/null
+	iwconfig > tmp 2>/dev/null
+	monitor=$(grep -m 1 'Monitor' tmp | awk '{print $1}')
+	rm tmp 2>/dev/null
+     killall dhclient3 &>/dev/null
+     airmon-ng start $interface &>/dev/null
+     iwconfig > tmp 2>/dev/null
+     monitor=$(grep -m 1 'Monitor' tmp | awk '{print $1}')
+     rm tmp 2>/dev/null
+else
+	zenity --error --text "No wireless device found. If you are using a VM, make sure your USB card is enabled."
+	rm tmp 2>/dev/null
+	echo
+     zenity --error --text "No wireless device found. If you are using a VM, make sure your USB card is enabled."
+     rm tmp 2>/dev/null
+     echo
+	exit
+     echo
+     exit
+fi
